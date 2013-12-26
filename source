@@ -1,0 +1,91 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+
+namespace WindowsFormsApplication2
+{
+    public partial class Form1 : Form
+    {
+
+        Bitmap Foto;
+        Graphics Graf;
+        Rectangle Rec;
+
+
+
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+       
+
+        private void salvarToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog save = new SaveFileDialog();
+           
+            
+            if (save.ShowDialog() == DialogResult.OK) { pictureBox1.Image.Save(save.FileName); }
+            
+        }
+
+        private void limparToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            pictureBox1.Image = null;
+        }
+
+        private void teste_Click(object sender, EventArgs e)
+        {
+
+            Rec = new Rectangle();
+            Rec = Screen.GetBounds(Rec);
+
+
+            this.Opacity = 0;
+
+            Foto = new Bitmap(Rec.Width, Rec.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            Graf = Graphics.FromImage(Foto);
+            Graf.CopyFromScreen(Rec.X, Rec.Y, 0, 0, Rec.Size, CopyPixelOperation.SourceCopy);
+
+            pictureBox1.Image = Foto;
+
+            this.Opacity = 100;
+        }
+
+        private void salvar_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog save = new SaveFileDialog();
+            save.FileName = "NomeDoArquivo";
+            save.DefaultExt = "png";
+            save.Filter = "JPG|*.jpg;*.jpeg |BMP|*.bmp|GIF|*.gif|JPG|*.jpg;*.jpeg|PNG|*.png|TIFF|*.tif;*.tiff|" + "All Graphics Types|*.bmp;*.jpg;*.jpeg;*.png;*.tif;*.tiff";
+
+
+            if (save.ShowDialog() == DialogResult.OK) { pictureBox1.Image.Save(save.FileName); }
+        }
+        private void limpar_Click(object sender, EventArgs e)
+        {
+            pictureBox1.Image = null;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.Opacity = 0;
+
+            Foto = new Bitmap(pictureBox1.Width, pictureBox1.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            Graf = Graphics.FromImage(Foto);
+            System.Threading.Thread.Sleep(40);
+            Graf.CopyFromScreen(this.Location.X, (this.Location.Y + pictureBox1.Location.Y + 30), 0, 0, this.Size, CopyPixelOperation.SourceCopy);
+            pictureBox1.Image = Foto;
+            this.Opacity = 100; 
+        }
+
+     
+        
+      
+    }
+}
